@@ -1,0 +1,29 @@
+{
+  "description": "Production-grade plugin hooks: cross-session project enforcement (SessionStart) and oracle-gate inner-loop enforcement (PostToolUse, loop-protocol Rule 7). Commands resolve the plugin root by waterfall (CLAUDE_PLUGIN_ROOT, then CODEX_PLUGIN_ROOT, then the Claude Code cache scan) and degrade to silence when no root resolves — the same hooks.json is read by Claude Code and mirrored for Codex.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "_R=\"${CLAUDE_PLUGIN_ROOT:-${CODEX_PLUGIN_ROOT:-}}\"; [ -z \"$_R\" ] && _R=$(for d in \"$HOME/.claude/plugins/cache/nagisanzenin/production-grade\"/*/; do [ -f \"$d/hooks/session-guard.sh\" ] && echo \"$d\"; done | sort -V | tail -1); _R=\"${_R%/}\"; if [ -n \"$_R\" ] && [ -f \"$_R/hooks/session-guard.sh\" ]; then bash \"$_R/hooks/session-guard.sh\"; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "_R=\"${CLAUDE_PLUGIN_ROOT:-${CODEX_PLUGIN_ROOT:-}}\"; [ -z \"$_R\" ] && _R=$(for d in \"$HOME/.claude/plugins/cache/nagisanzenin/production-grade\"/*/; do [ -f \"$d/hooks/oracle-gate.sh\" ] && echo \"$d\"; done | sort -V | tail -1); _R=\"${_R%/}\"; if [ -n \"$_R\" ] && [ -f \"$_R/hooks/oracle-gate.sh\" ]; then bash \"$_R/hooks/oracle-gate.sh\"; fi",
+            "timeout": 25
+          }
+        ]
+      }
+    ]
+  }
+}

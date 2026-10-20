@@ -1,0 +1,5 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "production-grade",
+  "description": "14 AI agents, one install, idea to production: architecture docs, API contracts, tested backend/frontend, security audit, CI/CD pipelines, and documentation — for building, hardening, shipping, and documenting real systems."
+}

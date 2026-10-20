@@ -1,0 +1,14 @@
+{
+  "name": "production-grade",
+  "description": "Production Grade — 14 AI agents, one install, idea to production.",
+  "owner": {
+    "name": "Quan Duong"
+  },
+  "plugins": [
+    {
+      "name": "production-grade",
+      "source": "./",
+      "description": "14 AI agents for all software engineering work: architecture, tested code, security audit, CI/CD, documentation. Adaptive routing with 10 execution modes. Same skills/ as the Claude Code plugin."
+    }
+  ]
+}
